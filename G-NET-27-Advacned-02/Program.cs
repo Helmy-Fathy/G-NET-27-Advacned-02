@@ -16,6 +16,16 @@
             return result;
         }
 
+        //  TASK 03.1 – Print Reports
+        //  Delegate used: Action<Product>
+        //  Why: Action<T> represents a void operation on T. The caller
+        //  decides what to print; this method just iterates – no output
+        //  logic is hard-coded here.
+        static void PrintReport(List<Product> products, Action<Product> print)
+        {
+            foreach (var p in products) print(p);
+        }
+
         static void Main(string[] args)
         {
             List<Product> catalog = new ()
@@ -60,6 +70,20 @@
                 p => p.Category == "Clothing" && p.Price < 100);
             foreach (var p in clothingUnder100)
                 Console.WriteLine($"  {p.Name} - ${p.Price} (Stock: {p.Stock})");
+
+
+            //  TASK 03.1 – Print Reports
+
+            Console.WriteLine("\n===== Task 03.1: Print Reports =====\n");
+
+            // Scenario 1 – Short Report
+            Console.WriteLine("-- Short Report --");
+            PrintReport(catalog, p => Console.WriteLine($"{p.Name} - ${p.Price}"));
+
+            // Scenario 2 – Detailed Report
+            Console.WriteLine("\n-- Detailed Report --");
+            PrintReport(catalog,
+                p => Console.WriteLine($"[{p.Category}] {p.Name} | Price: ${p.Price} | Stock: {p.Stock}"));
 
         }
     }
