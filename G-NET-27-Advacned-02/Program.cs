@@ -39,6 +39,17 @@
             return result;
         }
 
+        //  TASK 03.3 – Filter Products
+        //  Delegate used: Predicate<Product>
+        //  Why: Predicate<T> is the idiomatic .NET delegate for a boolean "does this match?" test .
+        static List<Product> FilterProducts(List<Product> products, Predicate<Product> match)
+        {
+            var result = new List<Product>();
+            foreach (var product in products)
+                if (match(product)) result.Add(product);
+            return result;
+        }
+
         static void Main(string[] args)
         {
             List<Product> catalog = new ()
@@ -111,6 +122,16 @@
             Console.WriteLine("\n-- Price Labels --");
             var labels = TransformProducts(catalog, p => $"{p.Name}: {(p.Price > 100 ? "Expensive!" : "Affordable")}");
             foreach (var l in labels) Console.WriteLine(l);
+
+            //  TASK 03.3 – Filter Products
+
+            Console.WriteLine("\n===== Task 03.3: Filter Products =====\n");
+
+            // Scenario 5 – Low-Stock Alert (Stock < 20)
+            Console.WriteLine("-- Low-Stock Alert --");
+            var lowStock = FilterProducts(catalog, p => p.Stock < 20);
+            foreach (var p in lowStock)
+                Console.WriteLine($"[LOW STOCK] {p.Name}: only {p.Stock} left!");
 
         }
     }
