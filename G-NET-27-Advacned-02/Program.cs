@@ -26,6 +26,19 @@
             foreach (var p in products) print(p);
         }
 
+        //  TASK 03.2 – Transform Products
+        //  Delegate used: Func<Product, string>
+        //  Why: Func<TIn, TOut> maps each product to any output type.
+        //  The transformation logic lives in the lambda, not here, so
+        //  new formats need zero changes to this method.
+        static List<string> TransformProducts(List<Product> products, Func<Product, string> transform)
+        {
+            var result = new List<string>();
+            foreach (var product in products) 
+                result.Add(transform(product));
+            return result;
+        }
+
         static void Main(string[] args)
         {
             List<Product> catalog = new ()
@@ -84,6 +97,20 @@
             Console.WriteLine("\n-- Detailed Report --");
             PrintReport(catalog,
                 p => Console.WriteLine($"[{p.Category}] {p.Name} | Price: ${p.Price} | Stock: {p.Stock}"));
+
+            //  TASK 03.2 – Transform Products
+
+            Console.WriteLine("\n===== Task 03.2: Transform Products =====\n");
+
+            // Scenario 3 – Summary List  
+            Console.WriteLine("-- Summary List --");
+            var summaries = TransformProducts(catalog, p => $"{p.Name} (${p.Price})");
+            foreach (var s in summaries) Console.WriteLine(s);
+
+            // Scenario 4 – Price Label  
+            Console.WriteLine("\n-- Price Labels --");
+            var labels = TransformProducts(catalog, p => $"{p.Name}: {(p.Price > 100 ? "Expensive!" : "Affordable")}");
+            foreach (var l in labels) Console.WriteLine(l);
 
         }
     }
